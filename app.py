@@ -42,9 +42,6 @@ class TimecardClient:
         resp.raise_for_status()
         data = resp.json()
 
-        # Debug print
-        print("🔎 Login response:", data)
-
         if "result" in data and "access-token" in data["result"]:
             token = data["result"]["access-token"]
             company_id = data["result"]["user"]["company"]["id"]
@@ -94,26 +91,29 @@ client = TimecardClient(LOGIN_URL, USERNAME, PASSWORD)
 def home():
     return jsonify({"message": "✅ Timecard API is running"})
 
-@app.route("/timecard/create", methods=["POST"])
-def create_timecard():
+@app.route("/timecard", methods=["POST"])
+def handle_timecards():
     data = request.get_json()
-    try:
-        resp = client.create_timecard(data)
-        return jsonify({"status": "success", "response": resp})
-    except Exception as e:
-        return jsonify({"status": "error", "message": str(e)}), 500
 
-@app.route("/timecard/bulk", methods=["POST"])
-def bulk_timecard():
-    entries = request.get_json()
-    results = []
-    for entry in entries:
+    if isinstance(data, dict):  # Single entry
         try:
-            resp = client.create_timecard(entry)
-            results.append({"entry": entry, "status": "success", "response": resp})
+            resp = client.create_timecard(data)
+            return jsonify({"status": "success", "response": resp})
         except Exception as e:
-            results.append({"entry": entry, "status": "error", "message": str(e)})
-    return jsonify(results)
+            return jsonify({"status": "error", "message": str(e)}), 500
+
+    elif isinstance(data, list):  # Bulk entries
+        results = []
+        for entry in data:
+            try:
+                resp = client.create_timecard(entry)
+                results.append({"entry": entry, "status": "success", "response": resp})
+            except Exception as e:
+                results.append({"entry": entry, "status": "error", "message": str(e)})
+        return jsonify(results)
+
+    else:
+        return jsonify({"status": "error", "message": "Invalid payload format"}), 400
 
 if __name__ == "__main__":
     import os
