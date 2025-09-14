@@ -14,6 +14,7 @@ TOKEN_VALIDITY = 2 * 60 * 60   # 2 hours
 # --- Client Class ---
 class TimecardClient:
     def __init__(self, login_url, username, password):
+        
         self.login_url = login_url
         self.username = username
         self.password = password
