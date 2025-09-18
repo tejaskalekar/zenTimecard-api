@@ -5,7 +5,7 @@ import time
 app = Flask(__name__)
 
 # --- Configuration ---
-USERNAME = "supportC&C@zentrades.pro"
+USERNAME = "supportalertalarm@zentrades.pro"
 PASSWORD = "#6D1i7ytdX95"
 LOGIN_URL = "https://services.zentrades.pro/api/auth/login"
 TIMECARD_URL = "https://services.zentrades.pro/api/timecard/create"
