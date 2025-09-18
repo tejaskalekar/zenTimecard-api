@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 # --- Configuration ---
 USERNAME = "supportalertalarm@zentrades.pro"
-PASSWORD = "#6D1i7ytdX95"
+PASSWORD = "vl2oTh3flV3?"
 LOGIN_URL = "https://services.zentrades.pro/api/auth/login"
 TIMECARD_URL = "https://services.zentrades.pro/api/timecard/create"
 TOKEN_VALIDITY = 2 * 60 * 60   # 2 hours
